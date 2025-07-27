@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Montagem de Cadeiras de Barbearia</title>
+    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --cor-fundo: #0f0f0f;
+            --cor-primaria: #d4af37;
+            --cor-secundaria: #ffffff;
+            --cor-texto: #eaeaea;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #111;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        nav img {
+            height: 50px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: var(--cor-primaria);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--cor-secundaria);
+        }
+
+        header {
+            padding-top: 120px;
+            text-align: center;
+            background: linear-gradient(to bottom, #111, #1a1a1a);
+            padding-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--cor-primaria);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            color: var(--cor-secundaria);
+        }
+
+        section {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--cor-primaria);
+            text-align: center;
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--cor-texto);
+            text-align: center;
+        }
+
+        /* NOVO: Layout lado a lado para a seção sobre */
+        .sobre-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sobre-container img {
+            max-width: 400px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .sobre-texto {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .sobre-texto p {
+            text-align: left;
+        }
+
+        /* SLIDE FIXO na section SOBRE */
+        .sobre-slide {
+            margin-top: 2rem;
+            max-width: 400px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #222;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+            user-select: none;
+        }
+
+        .sobre-slide img.main-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sobre-slide .thumbs {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background-color: #111;
+        }
+
+        .sobre-slide .thumbs img {
+            width: 22%;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .sobre-slide .thumbs img.active {
+            border-color: var(--cor-primaria);
+        }
+
+        .sobre-slide button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--cor-primaria);
+            border: none;
+            font-size: 1.5rem;
+            padding: 0.3rem 0.7rem;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+            user-select: none;
+        }
+
+        .sobre-slide button:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .sobre-slide button.prev {
+            left: 5px;
+        }
+
+        .sobre-slide button.next {
+            right: 5px;
+        }
+
+        /* Slider MODELOS (já existente) */
+        .slider {
+            position: relative;
+            max-width: 700px;
+            margin: 2rem auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            background-color: #1a1a1a;
+        }
+
+        .slides-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            text-align: center;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            background-color: #000;
+        }
+
+        .slide p {
+            padding: 1rem;
+            font-size: 1rem;
+            color: var(--cor-secundaria);
+        }
+
+        .prev,
+        .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--cor-primaria);
+            font-size: 2rem;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: #1e1e1e;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        input,
+        textarea {
+            padding: 0.7rem;
+            font-size: 1rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #111;
+            color: var(--cor-texto);
+        }
+
+        button {
+            padding: 0.7rem;
+            font-size: 1rem;
+            background-color: var(--cor-primaria);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c19c30;
+        }
+
+        .whatsapp {
+            display: block;
+            margin-top: 1rem;
+            text-align: center;
+            color: #25d366;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #111;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .slide img {
+                max-height: 300px;
+            }
+
+            .sobre-container {
+                flex-direction: column;
+            }
+
+            .sobre-texto p {
+                text-align: center;
+            }
+
+            /* Ajusta slide fixo para mobile */
+            .sobre-slide {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .sobre-slide img.main-image {
+                height: 180px;
+            }
+
+            .sobre-slide .thumbs img {
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <img src="imgs/Logo de Arithielly Montagens com chave.png" alt="Logo" />
+        <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#modelos">Modelos</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- HEADER -->
+    <header>
+        <h1>Montagem de Cadeiras de Barbearia</h1>
+        <p>Profissionalismo, qualidade e confiança.</p>
+    </header>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+        <h2>Sobre meu trabalho</h2>
+        <div class="sobre-container">
+            <img src="imgs/ac10fc78-b9dd-4514-9600-965b81778f3c.png" alt="Montagem de cadeira" />
+            <div class="sobre-texto">
+                <p>Sou especialista na montagem de cadeiras de barbeiro há mais de 15. Trabalho com precisão, seguindo todos os detalhes do
+                    fabricante, garantindo segurança e estética impecável para seu espaço. Já montei dezenas de modelos em
+                    diversas barbearias renomadas.</p>
+
+                <!-- SLIDE FIXO COM 4 IMAGENS PEQUENAS -->
+                <div class="sobre-slide" id="sobre-slide">
+                    <h2>Já montei cadeiras para essas empresas:</h2>
+                    <button class="prev" aria-label="Imagem anterior">&#10094;</button>
+                    <img src="imgs/images (2).jfif" alt="Imagem 1" class="main-image" id="main-image" />
+                    <button class="next" aria-label="Próxima imagem">&#10095;</button>
+                    <div class="thumbs" id="thumbs">
+                        <img src="imgs/images (2).jfif" alt="Imagem 1" class="active" data-index="0" />
+                        <img src="imgs/images (3).jfif" alt="Imagem 2" data-index="1" />
+                        <img src="imgs/images (4).jfif" alt="Imagem 3" data-index="2" />
+                        <img src="imgs/images.png" alt="Imagem 4" data-index="3" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODELOS -->
+    <section id="modelos">
+        <h2>Modelos que eu monto</h2>
+        <div class="slider">
+            <button class="prev">&#10094;</button>
+            <div class="slides-container" id="slides">
+                <div class="slide">
+                    <img src="imgs/crew-gold-barber-black-armchair.jpg" alt="Cadeira 1" />
+                    <p><strong>Modelo Classic</strong><br />Estilo retrô com hidráulico.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/images (1).jfif" alt="Cadeira 2" />
+                    <p><strong>Modelo Lux</strong><br />Acabamento cromado, reclinável.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/images.jfif" alt="Cadeira 3" />
+                    <p><strong>Modelo Vintage Pro</strong><br />Encosto alto, base reforçada.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/2877_-03_79383a33-48d1-477e-8474-ed3e6334d8cc_750x650.webp" alt="Cadeira 4" />
+                    <p><strong>Modelo Moderno</strong><br />Design contemporâneo, conforto superior.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/D_NQ_NP_880387-MLB73327251374_122023-O-cadeira-de-barbeiro-reclinavel-athenas.webp"
+                        alt="Cadeira 5" />
+                    <p><strong>Modelo Premium</strong><br />Couro legítimo, detalhes em madeira.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/poltrona-king-cromada-7-f1ae8325f55d31e5d117289508111761-1024-1024.png"
+                        alt="Cadeira 6" />
+                    <p><strong>Modelo Executivo</strong><br />Conforto e sofisticação para o seu salão.</p>
+                </div>
+                <div class="slide">
+                    <img src="imgs/6c4e374bf55f361acf31401964568035.jpg" alt="Cadeira 7" />
+                    <p><strong>Modelo Clássico Preto</strong><br />Elegância e durabilidade.</p>
+                </div>
+            </div>
+            <button class="next">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato">
+        <h2>Fale comigo</h2>
+        <p>Entre em contato para orçamentos e agendamentos.</p>
+        <form>
+            <input type="text" placeholder="Seu nome" required />
+            <input type="email" placeholder="Seu e-mail" required />
+            <textarea placeholder="Mensagem" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <a href="https://wa.me/+5511986234853" class="whatsapp" target="_blank">Chamar no WhatsApp</a>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2025 - Arithielly Montagem de Cadeiras de Barbearia</p>
+        <p>Desenvolvido por Raaberts &reg; - 2025</p>
+    </footer>
+
+    <!-- SCRIPT SLIDER MODELOS -->
+    <script>
+        const slidesContainer = document.getElementById("slides");
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.querySelector(".slider .prev");
+        const nextBtn = document.querySelector(".slider .next");
+
+        let index = 0;
+
+        function updateSlider() {
+            slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        prevBtn.addEventListener("click", () => {
+            index = (index - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        nextBtn.addEventListener("click", () => {
+            index = (index + 1) % slides.length;
+            updateSlider();
+        });
+    </script>
+
+    <!-- SCRIPT SLIDE FIXO SOBRE -->
+    <script>
+        (function () {
+            const mainImage = document.getElementById('main-image');
+            const thumbs = document.querySelectorAll('#thumbs img');
+            const prevBtn = document.querySelector('#sobre-slide .prev');
+            const nextBtn = document.querySelector('#sobre-slide .next');
+            let currentIndex = 0;
+
+            // Imagens (deve trocar pelos caminhos reais)
+            const images = [
+                'imgs/images (2).jfif',
+                'imgs/images (3).jfif',
+                'imgs/images (4).jfif',
+                'imgs/images.png'
+            ];
+
+            function updateMainImage(index) {
+                currentIndex = index;
+                mainImage.src = images[currentIndex];
+                thumbs.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentIndex);
+                });
+            }
+
+            thumbs.forEach((thumb, i) => {
+                thumb.addEventListener('click', () => {
+                    updateMainImage(i);
+                });
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateMainImage(currentIndex);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateMainImage(currentIndex);
+            });
+
+            // Inicializa
+            updateMainImage(0);
+        })();
+    </script>
+
+</body>
+
+</html>
