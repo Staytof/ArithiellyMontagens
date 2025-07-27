@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arithielly Montagens</title>
-    <link rel="icon" href="imgs/Logo de Arithielly Montagens com chave.png" type="image/x-icon" />
+    <title>Montagem de Cadeiras de Barbearia</title>
+    <link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
         :root {
@@ -61,6 +61,15 @@
         nav ul li a:hover {
             color: var(--cor-secundaria);
         }
+
+        nav.scrolled {
+            background-color: rgba(17, 17, 17, 0.8);
+            /* Cor escura com transparência */
+            backdrop-filter: blur(6px);
+            /* Opcional: efeito de desfoque no fundo */
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
 
         header {
             padding-top: 120px;
@@ -337,6 +346,28 @@
             .sobre-slide .thumbs img {
                 height: 50px;
             }
+
+            .whatsapp-float {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #25d366;
+                color: white;
+                padding: 12px;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 24px;
+                z-index: 1001;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+            }
+
+            .whatsapp-float:hover {
+                background-color: #1ebd5a;
+            }
         }
     </style>
 </head>
@@ -365,8 +396,10 @@
         <div class="sobre-container">
             <img src="imgs/ac10fc78-b9dd-4514-9600-965b81778f3c.png" alt="Montagem de cadeira" />
             <div class="sobre-texto">
-                <p>Sou especialista na montagem de cadeiras de barbeiro há mais de 15. Trabalho com precisão, seguindo todos os detalhes do
-                    fabricante, garantindo segurança e estética impecável para seu espaço. Já montei dezenas de modelos em
+                <p>Sou especialista na montagem de cadeiras de barbeiro há mais de 15. Trabalho com precisão, seguindo
+                    todos os detalhes do
+                    fabricante, garantindo segurança e estética impecável para seu espaço. Já montei dezenas de modelos
+                    em
                     diversas barbearias renomadas.</p>
 
                 <!-- SLIDE FIXO COM 4 IMAGENS PEQUENAS -->
@@ -514,6 +547,15 @@
             // Inicializa
             updateMainImage(0);
         })();
+
+        window.addEventListener('scroll', function () {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
     </script>
 
 </body>
